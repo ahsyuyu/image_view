@@ -1,0 +1,54 @@
+<html>
+<script>
+
+var volpage2line=function(){
+	var volpage=document.getElementById("volpage").value;
+	var side=volpage.substr(volpage.length-1);
+
+	if(side.indexOf("a")>-1){
+		volpage=volpage.replace(/a/g ,"");
+		var num=volpage.split(".");
+		var line=num[1]*2-1;
+		document.getElementById("line").value=line;
+
+	}
+
+	if(side.indexOf("b")>-1){
+		volpage=volpage.replace(/b/g ,"");
+		var num=volpage.split(".");
+		var line=num[1]*2;
+		document.getElementById("line").value=line;
+	}
+}
+
+var line2volpage=function(){
+	var volpage=document.getElementById("line").value;
+	var num=volpage.split(".");
+	var side=num[1]%2;
+	
+	if(side==1){
+		num[1]=num[1]/2-0.5+1+"a";
+		line=num.join(".");
+		document.getElementById("volpage").value=line;
+
+	}
+	if(side==0){
+		num[1]=num[1]/2+"b";
+		line=num.join(".");
+		document.getElementById("volpage").value=line;
+
+	}
+
+}
+
+
+
+
+</script>
+<input id="volpage" value= "1.1b" ></input>
+<button onclick="volpage2line()">-></button>
+<button onclick="line2volpage()"><-</button>
+<input id="line" value= "1.3" ></input>
+<DIV id="line"></DIV>
+
+</html>

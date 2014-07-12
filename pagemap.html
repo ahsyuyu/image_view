@@ -1,0 +1,84 @@
+<html>
+<script>
+
+var Lj=["1b1","17b8","27b4","37b3","47a2"];
+
+var volpage2realpage=function(input){
+	//var volpage=document.getElementById("volpage").value;
+	var side=input.substr(input.length-2,1);
+
+	if(side.indexOf("a")>-1){
+		var num=input.substr(0,input.length-2);
+		var realpage=num*2-1;
+		//document.getElementById("line").value=line;
+	}
+	if(side.indexOf("b")>-1){
+		var num=input.substr(0,input.length-2);
+		var realpage=num*2;
+		//document.getElementById("line").value=line;
+	}
+	return realpage;
+}
+
+var volpage2line=function(input){ //不應該有input不然轉轉換會出問題，但如果沒有input找範圍無法找////////////////////
+	//var volpage=document.getElementById("volpage").value;
+	var online=input.substr(input.length-1);
+	online=parseInt(online);
+	var line=(volpage2realpage(input)-1)*8+online;
+	document.getElementById("line").value=line;
+	return line;
+}
+
+var realpage2volpage=function(input){
+	var side=input%2;
+	
+	if(side==1){
+		var volpage=input/2-0.5+1+"a";
+		//document.getElementById("volpage").value=line;
+	}
+	if(side==0){
+		var volpage=input/2+"b";
+		//document.getElementById("volpage").value=line;
+	}
+	return volpage;
+
+}
+
+var line2volpage=function(){
+	var line=document.getElementById("line").value;
+	var online=line%8;
+	var volpage=(line-online)/8+1;
+	var volpage=realpage2volpage(volpage)+online;
+
+	document.getElementById("volpage").value=volpage;
+
+}
+
+var findrange=function(){
+	var find=document.getElementById("find").value;
+	
+	for(var i in Lj){
+		i=parseInt(i);
+		var min=volpage2line(Lj[i]);
+		var max=volpage2line(Lj[i+1]);
+
+		if(find>=min&&find<=max){
+			document.getElementById("range").innerHTML=(Lj[i]+" ~ "+Lj[i+1]);
+		}
+	}
+
+}
+
+
+
+
+</script>
+<input id="volpage" value= "1b1" ></input>
+<button onclick="volpage2line()">-></button>
+<button onclick="line2volpage()"><-</button>
+<input id="line" value= "9" ></input></BR>
+<input id="find" value= "179" ></input>
+<button onclick="findrange()">find range</button>
+<span id="range"></span><br/>
+
+</html>
