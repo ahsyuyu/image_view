@@ -25,6 +25,21 @@ var volpage2realpage=function(input){
 	return realpage;
 }
 
+var realpage2volpage=function(input){
+	var side=input%2;
+	
+	if(side==1){
+		var volpage=input/2-0.5+1+"a";
+		//document.getElementById("volpage").value=line;
+	}
+	if(side==0){
+		var volpage=input/2+"b";
+		//document.getElementById("volpage").value=line;
+	}
+	return volpage;
+
+}
+
 var volpage2line=function(){
 	var volpage=document.getElementById("volpage").value;
 	var line=volpage2line_process(volpage);
@@ -40,20 +55,7 @@ var volpage2line_process=function(input){ //不應該有input不然轉轉換會�
 	//document.getElementById("line").value=line;
 	return line;
 }
-var realpage2volpage=function(input){
-	var side=input%2;
-	
-	if(side==1){
-		var volpage=input/2-0.5+1+"a";
-		//document.getElementById("volpage").value=line;
-	}
-	if(side==0){
-		var volpage=input/2+"b";
-		//document.getElementById("volpage").value=line;
-	}
-	return volpage;
 
-}
 
 var line2volpage=function(){
 	var line=document.getElementById("line").value;
