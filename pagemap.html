@@ -1,7 +1,12 @@
 <html>
 <script>
 
-var Lj=["1b1","17b8","27b4","37b3","47a2"];
+var Lj=["1b1","17b8","27b4","37b3","47a2","67a8","79a1","90b6","102b5","115a2",
+		"128a3","140b6","155b2","168a2","181b8","197a7","212a5","224b1","238a8",
+		"251a8","264a5","278a1","290a1","302b2"];
+var Ls=["1b1","20b7","33b6","47a3","63a1","88b2","105a6","121b6","138a7",
+		"155b3","173a7","192a6","213b5","231a4","248b2","269b3","289b3","306b1",
+		"325a2","343a2","361a3"];
 
 var volpage2realpage=function(input){
 	//var volpage=document.getElementById("volpage").value;
@@ -20,15 +25,21 @@ var volpage2realpage=function(input){
 	return realpage;
 }
 
-var volpage2line=function(input){ //不應該有input不然轉轉換會出問題，但如果沒有input找範圍無法找////////////////////
+var volpage2line=function(){
+	var volpage=document.getElementById("volpage").value;
+	var line=volpage2line_process(volpage);
+	document.getElementById("line").value=line;
+
+}
+
+var volpage2line_process=function(input){ //不應該有input不然轉轉換會出問題，但如果沒有input找範圍無法找////////////////////
 	//var volpage=document.getElementById("volpage").value;
 	var online=input.substr(input.length-1);
 	online=parseInt(online);
 	var line=(volpage2realpage(input)-1)*8+online;
-	document.getElementById("line").value=line;
+	//document.getElementById("line").value=line;
 	return line;
 }
-
 var realpage2volpage=function(input){
 	var side=input%2;
 	
@@ -50,35 +61,59 @@ var line2volpage=function(){
 	var volpage=(line-online)/8+1;
 	var volpage=realpage2volpage(volpage)+online;
 
+	if(volpage.indexOf("a0")>-1){
+		volpage=volpage.replace(/a0/g, "" );
+		volpage=volpage-1;
+		volpage=volpage+"b8"
+	}
+	if(volpage.indexOf("b0")>-1){
+		volpage=volpage.replace(/b0/g, "" );
+		volpage=volpage+"a8"
+	}
+
 	document.getElementById("volpage").value=volpage;
 
 }
 
-var findrange=function(){
-	var find=document.getElementById("find").value;
+var findrange=function(input,searchpage){
+	//var find=document.getElementById("find").value;
 	
-	for(var i in Lj){
+	for(var i in input){
 		i=parseInt(i);
-		var min=volpage2line(Lj[i]);
-		var max=volpage2line(Lj[i+1]);
+		var min=volpage2line_process(input[i]);
+		var max=volpage2line_process(input[i+1]);
 
-		if(find>=min&&find<=max){
-			document.getElementById("range").innerHTML=(Lj[i]+" ~ "+Lj[i+1]);
+		if(searchpage>=min&&searchpage<=max){
+			//document.getElementById("range").innerHTML=(input[i]+" ~ "+input[i+1]);
+			return (input[i]+" ~ "+input[i+1])
+
 		}
 	}
 
 }
 
+var findrange_Lj=function(){
+	var find=document.getElementById("find_Lj").value;
+	document.getElementById("range_Lj").innerHTML=findrange(Lj,find);
+}
+
+var findrange_Ls=function(){
+	var find=document.getElementById("find_Ls").value;
+	document.getElementById("range_Ls").innerHTML=findrange(Ls,find);
+}
 
 
 
 </script>
-<input id="volpage" value= "1b1" ></input>
+Volume Page: <input id="volpage" value= "1b1" ></input>
 <button onclick="volpage2line()">-></button>
 <button onclick="line2volpage()"><-</button>
-<input id="line" value= "9" ></input></BR>
-<input id="find" value= "179" ></input>
-<button onclick="findrange()">find range</button>
-<span id="range"></span><br/>
+Line: <input id="line" value= "272" ></input></BR>
+<input id="find_Lj" value= "179" ></input>
+<button onclick="findrange_Lj()">find range: Lj</button>
+<span id="range_Lj"></span><br/>
+<input id="find_Ls" value= "179" ></input>
+<button onclick="findrange_Ls()">find range: Ls</button>
+<span id="range_Ls"></span><br/>
 
 </html>
