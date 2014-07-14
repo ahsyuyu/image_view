@@ -103,41 +103,36 @@ var findrange_Ls=function(){
 	document.getElementById("range_Ls").innerHTML=findrange(Ls,find);
 }
 
-var findcorres=function(input,line){
-	
-	var range=findrange(input,line).split("~");
-	var range_min=volpage2line_process(range[0]);
-	var range_max=volpage2line_process(range[1]);
-	var range=range_max-range_min+1;
-	return range;
+var findcorres=function(input1,input2,line){
+	var location=line-input1[0];
+	var corrs=(location*(input2[input2.length-1]/input1[input1.length-1])+9).toFixed(0);
+	return corrs;
+
 }
 
 var findcorres_fromLj=function(){
 	var line=document.getElementById("find_Lj").value;
-	var range_Lj=findcorres(Lj,line);
-	var range_Ls=findcorres(Ls,line);
-	var range=(line*(range_Ls/range_Lj)).toFixed(0);
-	document.getElementById("findcorres_Lj").innerHTML=range;
+	var corrs=findcorres(line_Lj,line_Ls,line);  //Lj的行數對照成Ls的行數
+	document.getElementById("findcorres_Lj").innerHTML=corrs;
 }
 
 var findcorres_fromLs=function(){
 	var line=document.getElementById("find_Ls").value;
-	var range_Lj=findcorres(Lj,line);
-	var range_Ls=findcorres(Ls,line);
-	var range=(line*(range_Lj/range_Ls)).toFixed(0);
-	document.getElementById("findcorres_Ls").innerHTML=range;
+	var corrs=findcorres(line_Ls,line_Lj,line);
+	document.getElementById("findcorres_Ls").innerHTML=corrs;
 }
 
-var test=function(){
-	var line_Lj=[];
+var line_Lj=[];
 	for(var i in Lj){
 		line_Lj[i]=volpage2line_process(Lj[i]);
 	}
-	var line_Ls=[];
+var line_Ls=[];
 	for(var i in Ls){
 		line_Ls[i]=volpage2line_process(Ls[i]);
 	}
-}
+console.log(line_Ls);
+console.log(line_Lj);
+
 
 
 </script>
