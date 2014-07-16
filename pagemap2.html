@@ -1,4 +1,5 @@
 <html>
+<script src="image_view2.js"></script>
 <script>
 
 var Lj=["1b1","17b8","27b4","37b3","47a2","67a8","79a1","90b6","102b5","115a2",
@@ -60,8 +61,14 @@ var realpage2volpage=function(input){
 
 var line2volpage=function(){
 	var line=document.getElementById("line").value;
-	var online=line%8;
-	var volpage=(line-online)/8+1;
+	volpage=line2volpage_process(line);
+	document.getElementById("volpage").value=volpage;
+
+}
+
+var line2volpage_process=function(input){
+	var online=input%8;
+	var volpage=(input-online)/8+1;
 	var volpage=realpage2volpage(volpage)+online;
 
 	if(volpage.indexOf("a0")>-1){
@@ -74,7 +81,7 @@ var line2volpage=function(){
 		volpage=volpage+"a8"
 	}
 
-	document.getElementById("volpage").value=volpage;
+	return volpage;
 
 }
 
@@ -103,24 +110,56 @@ var findrange_Ls=function(){
 	document.getElementById("range_Ls").innerHTML=findrange(Ls,find);
 }
 
-var findcorres=function(input1,input2,line){
-	var location=line-input1[0];
-	var corrs=(location*(input2[input2.length-1]/input1[input1.length-1])+input2[0]).toFixed(0);
-	return corrs;
+var find_corres=function(input1,input2,line,section){
+	
+	//var range=findrange(input,line).split("~");
+	//var range_min=range[0];
+	//var range_max=volpage2line_process(range[1]);
+	//var range=range_max-range_min+1;
+	//return range;
+	section=parseInt(section);
+	var range1=input1[section+1]-input1[section];
+	var range2=input2[section+1]-input2[section];
+	var location=line-input1[section];
+	var corres=(location*(range2/range1)+input2[section]).toFixed(0);
+	return corres;
 
 }
 
-var findcorres_fromLj=function(){
-	var line=document.getElementById("find_Lj").value;
-	var corrs=findcorres(line_Lj,line_Ls,line);  //Lj的行數對照成Ls的行數
-	document.getElementById("findcorres_Lj").innerHTML=corrs;
+var findcorres_fromLj=function(input){
+	//var volpage=document.getElementById("find_Lj").value;
+	volpage=input.split(".");
+	volpage=volpage[1];
+	var line=volpage2line_process(volpage);
+	var range=findrange(Lj,line).split("~");
+	for (var i in Lj){
+		if (Lj[i]==range[0]){
+			var section=i;
+		}
+	}
+	var range_Lj=find_corres(line_Lj,line_Ls,line,section);
+	range=line2volpage_process(range_Lj);
+	document.getElementById("findcorres_Lj").innerHTML=range;
+
+	return range;
 }
 
 var findcorres_fromLs=function(){
-	var line=document.getElementById("find_Ls").value;
-	var corrs=findcorres(line_Ls,line_Lj,line);
-	document.getElementById("findcorres_Ls").innerHTML=corrs;
+	var volpage=document.getElementById("find_Ls").value;
+	volpage=volpage.split(".");
+	volpage=volpage[1];
+	var line=volpage2line_process(volpage);
+	var range=findrange(Ls,line).split("~");
+	for (var i in Ls){
+		if (Ls[i]==range[0]){
+			var section=i;
+		}
+	}
+	var range_Ls=find_corres(line_Ls,line_Lj,line,section);
+	range=line2volpage_process(range_Ls);
+	document.getElementById("findcorres_Ls").innerHTML=range;
 }
+
 
 var line_Lj=[];
 	for(var i in Lj){
@@ -130,28 +169,38 @@ var line_Ls=[];
 	for(var i in Ls){
 		line_Ls[i]=volpage2line_process(Ls[i]);
 	}
-console.log(line_Ls);
-console.log(line_Lj);
 
 
 
 </script>
-Volume Page: <input id="volpage" value= "1b1" ></input>
-<button onclick="volpage2line()">-></button>
-<button onclick="line2volpage()"><-</button>
-Line: <input id="line" value= "272" ></input><BR>
-<input id="find_Lj" value= "179" ></input>
-<button onclick="findrange_Lj()">find range: Lj</button>
-<span id="range_Lj"></span><br/>
+<P ALIGN=CENTER>
+Lj:<input id="find_Lj" value= "1.1a2" ></input>
+<span id="range_Lj"></span>
+<button onclick="image_Lijang()">search image</button>
 Find correspond line to Ls: 
 <button onclick="findcorres_fromLj()">find</button>
 <span id="findcorres_Lj"></span><br/>
-<input id="find_Ls" value= "179" ></input>
-<button onclick="findrange_Ls()">find range: Ls</button>
-<span id="range_Ls"></span><br/>
+Ls:<input id="find_Ls" value= "1.2b2" ></input>
+<span id="range_Ls"></span>
+<button onclick="image_Lhasa()">search image</button>
 Find correspond line to Lj: 
 <button onclick="findcorres_fromLs()">find</button>
-<span id="findcorres_Ls"></span><br/>
+<span id="findcorres_Ls"></span><br/></P>
 <button onclick="test()">test</button>
+<P ALIGN=CENTER>
+<button onclick="prevpage_Lijang()">previous page</button>
+<span id="page_Lj"></span>
+<button onclick="nextpage_Lijang()">next page</button>
+<IMG id="image_Lj" style="width:100%"></IMG>
+<button onclick="prevpage_Lhasa()">previous page</button>
+<span id="page_Ls"></span>
+<button onclick="nextpage_Lhasa()">next page</button>
+<IMG id="image_Ls" style="width:100%"></IMG></P>
+
 
 </html>
+
+
+
+
+
