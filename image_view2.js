@@ -6,19 +6,22 @@
 	
 	var volpage_Ls=findcorres_fromLj(volpage);
 	volpage_Ls=volpage_Ls.substr(0,volpage_Ls.length-1);
-	image_Ls.src="Lhasa image/001/"+idtoimagefilename(volpage)+".png";
-
-
+	image_Ls.src="Lhasa image/001/"+idtoimagefilename(volpage_Ls)+".png";
+	document.getElementById("page_Ls").innerHTML=volpage_Ls;
 }
 
 var image_Lhasa=function(){
 	var volpage=document.getElementById("find_Ls").value;
-	volpage=volpage.substr(0,volpage.length-1);
-	image_Ls.src="Lhasa image/001/"+idtoimagefilename(volpage)+".png";
-	document.getElementById("page_Ls").innerHTML=volpage;
+	var volpage_Ls=volpage.substr(0,volpage.length-1);
+	image_Ls.src="Lhasa image/001/"+idtoimagefilename(volpage_Ls)+".png";
+	document.getElementById("page_Ls").innerHTML=volpage_Ls;
 
-	image_Lj.src="Lijang image/001/"+idtoimagefilename(volpage)+".jpg";
-
+	var volpage_Ls=findcorres_fromLs(volpage);
+	var volpage_Lj=volpage_Ls.substr(0,volpage_Ls.length-1);
+	var han="1.";
+	var volpage_Lj=han+volpage_Lj;
+	image_Lj.src="Lijang image/001/"+idtoimagefilename(volpage_Lj)+".jpg";
+	document.getElementById("page_Lj").innerHTML=volpage_Lj;
 }
 
 var idtoimagefilename=function(p){  //p=沒有尾行數的volume page

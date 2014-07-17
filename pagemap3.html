@@ -2,11 +2,6 @@
 <script src="image_view2.js"></script>
 <script>
 
-
-//////////Ls的find 可動 但Lj不可
-
-
-
 var Lj=["1b1","17b8","27b4","37b3","47a2","67a8","79a1","90b6","102b5","115a2",
 		"128a3","140b6","155b2","168a2","181b8","197a7","212a5","224b1","238a8",
 		"251a8","264a5","278a1","290a1","302b2"];
@@ -149,9 +144,9 @@ var findcorres_fromLj=function(){
 	//return range;
 }
 
-var findcorres_fromLs=function(){
-	var volpage=document.getElementById("find_Ls").value;
-	volpage=volpage.split(".");
+var findcorres_fromLs=function(input){
+	//var volpage=document.getElementById("find_Ls").value;
+	volpage=input.split(".");
 	volpage=volpage[1];
 	var line=volpage2line_process(volpage);
 	var range=findrange(Ls,line).split("~");
@@ -163,6 +158,7 @@ var findcorres_fromLs=function(){
 	var range_Ls=find_corres(line_Ls,line_Lj,line,section);
 	range=line2volpage_process(range_Ls);
 	document.getElementById("findcorres_Ls").innerHTML=range;
+	return range;
 }
 
 
