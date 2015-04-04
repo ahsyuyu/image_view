@@ -1,6 +1,8 @@
-<html>
-<script>
+﻿<html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
+<script>
 var volpage2line=function(){
 	var volpage=document.getElementById("volpage").value;
 	var side=volpage.substr(volpage.length-1);
@@ -45,10 +47,10 @@ var line2volpage=function(){
 
 
 </script>
-<input id="volpage" value= "1.1b" ></input>
-<button onclick="volpage2line()">-></button>
-<button onclick="line2volpage()"><-</button>
-<input id="line" value= "1.3" ></input>
+藏經頁碼：<input id="volpage" value= "1.1b" ></input>
+<button type="button" class="btn btn-default" onclick="volpage2line()">-></button>
+<button type="button" class="btn btn-default" onclick="line2volpage()"><-</button>
+虛擬頁碼：<input id="line" value= "2" ></input>
 <DIV id="line"></DIV>
 
 </html>

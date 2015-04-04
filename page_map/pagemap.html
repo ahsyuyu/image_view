@@ -1,0 +1,182 @@
+<html>
+<script>
+
+var Lj=["1b1","17b8","27b4","37b3","47a2","67a8","79a1","90b6","102b5","115a2",
+		"128a3","140b6","155b2","168a2","181b8","197a7","212a5","224b1","238a8",
+		"251a8","264a5","278a1","290a1","302b2"];
+var Ls=["1b1","20b7","33b6","47a3","63a1","88b2","105a6","121b6","138a7",
+		"155b3","173a7","192a6","213b5","231a4","248b2","269b3","289b3","306b1",
+		"325a2","343a2","361a3"];
+
+var volpage2realpage=function(input){
+	//var volpage=document.getElementById("volpage").value;
+	var side=input.substr(input.length-2,1);
+
+	if(side.indexOf("a")>-1){
+		var num=input.substr(0,input.length-2);
+		var realpage=num*2-1;
+		//document.getElementById("line").value=line;
+	}
+	if(side.indexOf("b")>-1){
+		var num=input.substr(0,input.length-2);
+		var realpage=num*2;
+		//document.getElementById("line").value=line;
+	}
+	return realpage;
+}
+
+var volpage2line=function(){
+	var volpage=document.getElementById("volpage").value;
+	var line=getVolpage2Line(volpage);
+	document.getElementById("line").value=line;
+
+}
+
+var getVolpage2Line=function(input){ 
+	if(!input) return;
+	var online=input.substr(input.length-1);
+	online=parseInt(online);
+	var line=(volpage2realpage(input)-1)*8+online;
+	line=parseInt(line);
+	return line;
+
+}
+
+var realpage2volpage=function(input){
+	var side=input%2;
+	if(side==1){
+		var volpage=input/2-0.5+1+"a";
+	}
+	if(side==0){
+		var volpage=input/2+"b";
+	}
+	return volpage;
+
+}
+
+var line2volpage=function(){
+	var line=document.getElementById("line").value;
+	volpage=getLine2Volpage(line);
+	document.getElementById("volpage").value=volpage;
+
+}
+
+var getLine2Volpage=function(input){
+	var online=input%8;
+	var volpage=(input-online)/8+1;
+	var volpage=realpage2volpage(volpage)+online;
+
+	if(volpage.indexOf("a0")>-1){
+		volpage=volpage.replace(/a0/g, "" );
+		volpage=volpage-1;
+		volpage=volpage+"b8"
+	}
+	if(volpage.indexOf("b0")>-1){
+		volpage=volpage.replace(/b0/g, "" );
+		volpage=volpage+"a8"
+	}
+
+	return volpage;
+
+}
+
+var findrange=function(input,searchpage){
+	//var find=document.getElementById("find").value;
+	if(typeof searchpage!="number")searchpage=getVolpage2Line(searchpage);
+	for(var i in input){
+		i=parseInt(i);
+		var min=getVolpage2Line(input[i]);
+		var max=getVolpage2Line(input[i+1]);
+
+		if(searchpage>=min&&searchpage<=max){
+			//document.getElementById("range").innerHTML=(input[i]+" ~ "+input[i+1]);
+			return (input[i]+"~"+input[i+1])
+		}
+	}
+}
+
+
+var findrange_Lj=function(){
+	var find=document.getElementById("find_Lj").value;
+	document.getElementById("range_Lj").innerHTML=findrange(Lj,find);
+}
+
+var findrange_Ls=function(){
+	var find=document.getElementById("find_Ls").value;
+	document.getElementById("range_Ls").innerHTML=findrange(Ls,find);
+}
+
+var findCorres=function(input1,input2,line,section){
+	section=parseInt(section);
+	var range1=input1[section+1]-input1[section];
+	var range2=input2[section+1]-input2[section];
+	var location=line-input1[section];
+	var corres=(location*(range2/range1)+input2[section]).toFixed(0);
+	return corres;
+
+}
+
+var findcorres_fromLj=function(){
+	var volpage=document.getElementById("find_Lj").value;
+	var line=getVolpage2Line(volpage);
+	var range=findrange(Lj,line).split("~");
+	for (var i=0; i<Lj.length; i++){
+		if (Lj[i]==range[0]){
+			var section=i;
+		}
+	}
+	var range_Lj=findCorres(line_Lj,line_Ls,line,section);
+	var corres=getLine2Volpage(range_Lj);
+	document.getElementById("range_Lj").innerHTML=range.join("~");
+	document.getElementById("findcorres_Lj").innerHTML=corres;
+}
+
+
+var findcorres_fromLs=function(){
+	var volpage=document.getElementById("find_Ls").value;
+	var line=getVolpage2Line(volpage);
+	var range=findrange(Ls,line).split("~");
+	for (var i=0; i<Ls.length; i++){
+		if (Ls[i]==range[0]){
+			var section=i;
+		}
+	}
+	var range_Ls=findCorres(line_Ls,line_Lj,line,section);
+	var corres=getLine2Volpage(range_Ls);
+	document.getElementById("range_Ls").innerHTML=range.join("~");
+	document.getElementById("findcorres_Ls").innerHTML=corres;
+}
+
+
+var line_Lj=[];
+	for(var i in Lj){
+		line_Lj[i]=getVolpage2Line(Lj[i]);
+	}
+var line_Ls=[];
+	for(var i in Ls){
+		line_Ls[i]=getVolpage2Line(Ls[i]);
+	}
+
+
+</script>
+Volume Page: <input id="volpage" value= "1b1" ></input>
+<button onclick="volpage2line()">-></button>
+<button onclick="line2volpage()"><-</button>
+Line: <input id="line" value= "272" ></input>
+<br/><br/>
+LJ:<input id="find_Lj" value= "133b2" ></input>
+<button onclick="findcorres_fromLj()">find</button>
+<br/>
+Range: <span id="range_Lj"></span>
+<br/>
+Correspond line to Ls: <span id="findcorres_Lj"></span>
+<br/><br/>
+LS:<input id="find_Ls" value= "121b2" ></input>
+<button onclick="findcorres_fromLs()">find</button>
+<br/>
+Range: <span id="range_Ls"></span>
+<br/>
+Correspond line to Lj:<span id="findcorres_Ls"></span>
+<br/>
+
+</html>
